@@ -64,6 +64,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
             z-index: 101;
+            transition: color 5s ease;
         }
 
         #particles-js {
@@ -143,6 +144,7 @@
             updateParticleColor('#FF10F0'); // Update particle color to purple
             document.body.removeEventListener('click', dimLights);
             document.querySelector('.help-text').style.color = 'white';
+            document.querySelector('button').style.color = 'black';
         }
     </script>
 </body>
