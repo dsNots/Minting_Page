@@ -145,7 +145,19 @@
             document.body.removeEventListener('click', dimLights);
             document.querySelector('.help-text').style.color = 'white';
 
+            // Add the following code to transition the button background color
+            var buttons = document.querySelectorAll('button');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].style.transition = 'background-color 5s ease';
+            }
+            document.body.addEventListener('click', changeButtonBgColor);
+        }
 
+        function changeButtonBgColor() {
+            var buttons = document.querySelectorAll('button');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].style.backgroundColor = 'black';
+            }
         }
     </script>
 </body>
