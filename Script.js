@@ -20,7 +20,6 @@ async function initWeb3() {
     // Update the contract variable with the contract instance
     contract = new web3.eth.Contract(contractABI, contractAddress);
 }
-initWeb3();
 
 async function checkWeb3Provider() {
     if (window.ethereum) {
@@ -39,7 +38,6 @@ async function checkWeb3Provider() {
         console.error('No web3 provider detected');
     }
 }
-checkWeb3Provider();
 
 document.getElementById('mint').addEventListener('click', mintNFT);
 
@@ -68,4 +66,10 @@ async function mintNFT() {
         alert('Error minting NFT');
     }
 }
-window.addEventListener('load', initWeb3);
+document.getElementById('connectWallet').addEventListener('click', async () => {
+    console.log('ok!')
+    await initWeb3();
+    console.log('ok1!')
+    await checkWeb3Provider();
+    console.log('ok12')
+});
