@@ -8,9 +8,6 @@ let web3;
 let contract; // Define the contract variable here
 console.log('hm');
 async function initWeb3() {
-    if (!WalletConnectProvider) {
-        WalletConnectProvider = window.WalletConnectProvider.default;
-    }
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         try {
@@ -21,22 +18,33 @@ async function initWeb3() {
     } else if (window.web3) {
         web3 = new Web3(window.web3.currentProvider);
     } else {
-        // WalletConnect provider
+        if (!WalletConnectProvider) {
+            WalletConnectProvider = window.WalletConnectProvider.default;
+        }
+
         const providerOptions = {
             walletconnect: {
-                package: WalletConnectProvider, // required
+                package: WalletConnectProvider,
                 options: {
-                    infuraId: "INFURA_PROJECT_ID", // required, you can get it from https://infura.io/
+                    infuraId: "d72497a762da4471a0ef9ebe232cd86f", // Replace with your Infura Project ID
                 },
             },
         };
+
         const web3Modal = new Web3Modal({
             network: "mainnet", // optional
             cacheProvider: true, // optional
             providerOptions, // required
         });
-        const provider = await web3Modal.connect();
-        web3 = new Web3(provider);
+
+        try {
+            const provider = await web3Modal.connect();
+            web3 = new Web3(provider);
+        } catch (error) {
+            console.error('Error connecting to wallet:', error);
+            alert('Error connecting to wallet. Please try again.');
+            return;
+        }
     }
 
     // Update the contract variable with the contract instance
