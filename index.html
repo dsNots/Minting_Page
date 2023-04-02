@@ -59,12 +59,10 @@
         button {
             padding: 10px 30px;
             border: none;
-            background-color: #333;
+            background-color: #000000;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s;
             z-index: 101;
-            transition: color 5s ease;
         }
 
         #particles-js {
@@ -75,11 +73,12 @@
         }
 
         button:hover {
-            background-color: #555;
+            background-color: #070707;
         }
 
         #mint {
             font-size: 1.2rem;
+            background-color: #000000;
         }
 
         #connectWallet {
@@ -139,25 +138,11 @@
             document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
             document.getElementById('disco-ball').style.display = 'block';
             document.getElementById('disco-ball').style.top = '10%';
-            document.getElementById('smoke').style.opacity = '0.7';
-            document.getElementById('smoke').style.height = '30%';
             updateParticleColor('#FF10F0'); // Update particle color to purple
             document.body.removeEventListener('click', dimLights);
             document.querySelector('.help-text').style.color = 'white';
 
-            // Add the following code to transition the button background color
-            var buttons = document.querySelectorAll('button');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].style.transition = 'background-color 5s ease';
-            }
-            document.body.addEventListener('click', changeButtonBgColor);
-        }
 
-        function changeButtonBgColor() {
-            var buttons = document.querySelectorAll('button');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].style.backgroundColor = 'black';
-            }
         }
     </script>
 </body>
