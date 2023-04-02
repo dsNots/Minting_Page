@@ -8,6 +8,10 @@
         {
             "src": "Script.js",
             "use": "@vercel/static"
+        },
+        {
+            "src": "lets_get_it_on.mp3",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
