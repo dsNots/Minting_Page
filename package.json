@@ -1,0 +1,14 @@
+{
+    "name": "nft-minting-site",
+    "version": "1.0.0",
+    "description": "An NFT minting site",
+    "scripts": {
+        "start": "vercel dev",
+        "build": "echo 'Nothing to build'",
+        "deploy": "vercel --prod"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "vercel": "^23.1.2"
+    }
+}
