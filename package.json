@@ -7,7 +7,9 @@
         "build": "echo 'Nothing to build'",
         "deploy": "vercel --prod"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@walletconnect/web3-provider": "^1.8.0"
+    },
     "devDependencies": {
         "vercel": "^23.1.2"
     }
