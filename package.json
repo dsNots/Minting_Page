@@ -8,7 +8,12 @@
         "deploy": "vercel --prod"
     },
     "dependencies": {
-        "@walletconnect/web3-provider": "^1.8.0"
+        "@wagmi/core": "^0.10.8",
+        "@walletconnect/web3-provider": "^1.8.0",
+        "@web3modal/ethereum": "^2.2.2",
+        "@web3modal/html": "^2.2.2",
+        "ethers": "^5.7.2",
+        "web3modal": "^1.9.12"
     },
     "devDependencies": {
         "vercel": "^23.1.2"
