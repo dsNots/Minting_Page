@@ -9,7 +9,7 @@ function updateParticleColor(color) {
     particlesJS("particles-js", {
         particles: {
             number: {
-                value: 200
+                value: 600
             },
             color: {
                 value: color, // Use the color parameter
