@@ -140,7 +140,7 @@ async function mintNFT() {
         stopLoadingDots();
         mintButton.textContent = "Minted!";
         // add a response from the browser saying successfully minted!
-        alert('Successfully minted! View your transaction on Etherscan: https://etherscan.io/tx/' + { txHash });
+        alert('Successfully minted! View your transaction on Etherscan: https://etherscan.io/tx/' + txHash);
 
 
     } catch (error) {
