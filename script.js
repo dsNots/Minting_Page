@@ -1,9 +1,14 @@
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
+const isWindowOpen = false
+
 
 let web3;
 let contract;
 let initWeb3Promise;
+
+
+
 
 document.getElementById('enterSite').addEventListener('click', function () {
     this.style.display = 'none'; // Remove the "Enter Site" button
@@ -75,20 +80,22 @@ const providerOptions = {
 };
 
 const web3modal = new Web3Modal({
+
     cacheProvider: false, // optional
     providerOptions, // required
 });
 
 
 async function connectWallet() {
-    // Initialize Web3Modal
-    console.log('ok!')
 
+    // Initialize Web3Modal
     const web3Modal = new Web3Modal({
         network: "mainnet",
         cacheProvider: false,
         providerOptions
     });
+
+
 
     // Get a Web3 instance for the wallet
     const provider = await web3Modal.connect();
@@ -105,13 +112,10 @@ async function connectWallet() {
         button.textContent = 'Wallet connected';
     }
 
-    console.log(accounts);
 }
 
 async function mintNFT() {
     // initWeb3Promise = initWeb3();
-    console.log({ web3 })
-
     try {
         // Wait for the web3 instance to be ready
         await initWeb3Promise;
@@ -130,8 +134,13 @@ async function mintNFT() {
         // Restore the original text of the mint button after successful minting
         stopLoadingDots();
         mintButton.textContent = "Minted!";
+        // add a response from the browser saying successfully minted!
+        alert('Successfully minted!');
+
+
     } catch (error) {
         console.error("Error minting NFT:", error);
+        alert(error.message)
 
         // Restore the original text of the mint button if minting fails
         stopLoadingDots();
@@ -144,9 +153,11 @@ document.getElementById('mint').addEventListener('click', async () => {
 });
 
 document.getElementById('connectWallet').addEventListener('click', async () => {
-    console.log('ok!');
     await connectWallet(); // Call the connectWallet function here
 });
+
+
+
 function initializeParticlesAndEffects() {
     const elementsToShow = document.querySelectorAll('.hidden');
     elementsToShow.forEach(element => {

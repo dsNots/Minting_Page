@@ -19,6 +19,29 @@
             transition: background-color 10s;
         }
 
+        .web3modal-modal-lightbox {
+
+
+            z-index: 100000000 !important;
+
+
+        }
+
+
+
+        .web3modal-provider-container {
+            background-color: #303030 !important;
+        }
+
+        .web3modal-modal-card :hover {
+            background-color: #787575 !important;
+
+        }
+
+        .web3modal-modal-card {
+            background-color: #303030 !important;
+
+        }
 
         .dim {
             transition: opacity 10s;
@@ -93,6 +116,12 @@
             display: none;
         }
 
+        .hiddenButton {
+            display: block;
+            z-index: 1000;
+            background-color: #070707;
+        }
+
         #connectWallet {
             font-size: 1rem;
             padding: 8px 20px;
@@ -108,6 +137,12 @@
             /* Add opacity transition */
             opacity: 0;
             /* Set initial opacity to 0 */
+        }
+
+        @media (max-width: 768px) {
+            .help-text {
+                text-align: center;
+            }
         }
 
         @keyframes rotate {
