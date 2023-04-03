@@ -1,6 +1,10 @@
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 
+let web3;
+let contract;
+let initWeb3Promise;
+
 document.getElementById('enterSite').addEventListener('click', function () {
     this.style.display = 'none'; // Remove the "Enter Site" button
     var audio = document.querySelector('audio');
@@ -8,6 +12,19 @@ document.getElementById('enterSite').addEventListener('click', function () {
     audio.play();
     initializeParticlesAndEffects();
 });
+
+function displayLoadingDots(button) {
+    let dotCount = 0;
+    button.textContent = "Minting";
+
+    const interval = setInterval(() => {
+        button.textContent = "Minting" + ".".repeat(dotCount);
+        dotCount = (dotCount + 1) % 4;
+    }, 500);
+
+    return () => clearInterval(interval);
+}
+
 function updateParticleColor(color) {
     particlesJS("particles-js", {
         particles: {
@@ -41,15 +58,8 @@ function updateParticleColor(color) {
 updateParticleColor('#000000');
 
 const contractABI = [{ "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "approved", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "inputs": [], "name": "MetadataUri", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "addressMinted", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "addressMintedBalance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "approve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "currentIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "getApproved", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" }], "name": "isApprovedForAll", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "mint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "ownerOf", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "revealed", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "internalType": "bytes", "name": "_data", "type": "bytes" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" }], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_maxSupply", "type": "uint256" }], "name": "setMaxSupply", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_MetadataUri", "type": "string" }], "name": "setMetadataUri", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bool", "name": "_state", "type": "bool" }], "name": "setPaused", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bool", "name": "_state", "type": "bool" }], "name": "setRevealed", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_uriPrefix", "type": "string" }], "name": "setUriPrefix", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_uriSuffix", "type": "string" }], "name": "setUriSuffix", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "tokenURI", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "transferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_owner", "type": "address" }], "name": "walletOfOwner", "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "withdrawall", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]; // Replace with your contract's ABI
-const contractAddress = '0x57B31CdAc737BF4c7b0431aD5C7969C0a2cE80dc';
+const contractAddress = '0x130fA9F1b6C9E7Aa0111Ea0c7C448DE8075a5001';
 const mainnet = 'https://mainnet.infura.io/v3/d72497a762da4471a0ef9ebe232cd86f';
-
-async function initWeb3() {
-    const provider = await web3modal.connect();
-    web3 = new Web3(provider);
-    contract = new web3.eth.Contract(contractABI, contractAddress);
-}
-
 
 // Configure chains and create wagmi client
 const chains = [mainnet];
@@ -72,6 +82,8 @@ const web3modal = new Web3Modal({
 
 async function connectWallet() {
     // Initialize Web3Modal
+    console.log('ok!')
+
     const web3Modal = new Web3Modal({
         network: "mainnet",
         cacheProvider: false,
@@ -80,7 +92,8 @@ async function connectWallet() {
 
     // Get a Web3 instance for the wallet
     const provider = await web3Modal.connect();
-    const web3 = new Web3(provider);
+    web3 = new Web3(provider);
+    contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Use the provider to get the user's accounts
     const accounts = await web3.eth.getAccounts();
@@ -94,7 +107,11 @@ async function connectWallet() {
 
     console.log(accounts);
 }
+
 async function mintNFT() {
+    // initWeb3Promise = initWeb3();
+    console.log({ web3 })
+
     try {
         // Wait for the web3 instance to be ready
         await initWeb3Promise;
@@ -104,12 +121,21 @@ async function mintNFT() {
         const gasPrice = await web3.eth.getGasPrice();
         const gasEstimate = await contract.methods.mint().estimateGas({ from: account });
 
-        await contract.methods.mint().send({ from: account, gasPrice: gasPrice, gas: gasEstimate });
+        // Display loading sign with three dots
+        const mintButton = document.getElementById("mint");
+        const stopLoadingDots = displayLoadingDots(mintButton);
 
-        alert("NFT minted successfully!");
+        await contract.methods.mint().send({ from: account, gasPrice, gas: gasEstimate });
+
+        // Restore the original text of the mint button after successful minting
+        stopLoadingDots();
+        mintButton.textContent = "Minted!";
     } catch (error) {
-        console.error("An error occurred during the minting process:", error);
-        alert("An error occurred during the minting process.", error);
+        console.error("Error minting NFT:", error);
+
+        // Restore the original text of the mint button if minting fails
+        stopLoadingDots();
+        mintButton.textContent = "Mint";
     }
 }
 
@@ -158,11 +184,6 @@ function initializeParticlesAndEffects() {
         audio.play();
     });
 }
-
-let web3;
-let contract;
-let initWeb3Promise;
-
 
 document.getElementById('enterSite').addEventListener('click', function () {
     this.style.display = 'none'; // Remove the "Enter Site" button
