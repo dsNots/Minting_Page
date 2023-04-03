@@ -129,13 +129,18 @@ async function mintNFT() {
         const mintButton = document.getElementById("mint");
         const stopLoadingDots = displayLoadingDots(mintButton);
 
-        await contract.methods.mint().send({ from: account, gasPrice, gas: gasEstimate });
+        const receipt = await contract.methods.mint().send({ from: account, gasPrice, gas: gasEstimate });
+
+        const txHash = receipt.transactionHash;
+
+        console.log(txHash)
+
 
         // Restore the original text of the mint button after successful minting
         stopLoadingDots();
         mintButton.textContent = "Minted!";
         // add a response from the browser saying successfully minted!
-        alert('Successfully minted!');
+        alert('Successfully minted! View your transaction on Etherscan: https://etherscan.io/tx/' + { txHash });
 
 
     } catch (error) {
