@@ -19,6 +19,7 @@
             transition: background-color 10s;
         }
 
+
         .dim {
             transition: opacity 10s;
             opacity: 0.5;
@@ -27,16 +28,13 @@
         #disco-ball {
             position: absolute;
             top: -150px;
-            /* Initially, hide the disco ball above the viewport */
             left: 50%;
             width: 150px;
             height: 150px;
             transform: translateX(-50%);
             z-index: 100;
-            transition: top 10s ease-in;
-            /* Add transition for smooth animation */
+            transition: top 10s, transform 10s;
         }
-
 
         #particles-js>canvas {
             transition: background-color 2s ease;
@@ -63,6 +61,16 @@
             color: white;
             cursor: pointer;
             z-index: 101;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+        }
+
+        #enterSite {
+            opacity: 1;
+        }
+
+        button.visible {
+            opacity: 1;
         }
 
         #particles-js {
@@ -81,6 +89,10 @@
             background-color: #000000;
         }
 
+        .hidden {
+            display: none;
+        }
+
         #connectWallet {
             font-size: 1rem;
             padding: 8px 20px;
@@ -92,7 +104,10 @@
             margin-top: 1rem;
             z-index: 101;
             color: black;
-            transition: color 5s ease;
+            transition: color 10s ease, opacity 1s ease;
+            /* Add opacity transition */
+            opacity: 0;
+            /* Set initial opacity to 0 */
         }
 
         @keyframes rotate {
@@ -104,26 +119,40 @@
                 transform: translate(-50%, -50%) rotate(360deg);
             }
         }
+
+        @media (max-width: 767px) {
+            body * {
+                display: none;
+            }
+
+            body::after {
+                content: "Minting not available for mobile devices. Please visit everyoneis.art from a desktop computer.";
+                display: block;
+                text-align: center;
+                font-size: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="particles-js"></div>
-    <div class="text-container">
+    <div class="text-container hidden">
         <p id="line1">Line 1</p>
         <p id="line2">Line 2</p>
         <p id="line3">Line 3</p>
     </div>
-    <button id="connectWallet">Connect Wallet</button>
-    <button id="mint">Mint</button>
-    <div class="help-text">
+    <button id="enterSite">Enter Site</button>
+    <button id="connectWallet" class="hidden">Connect Wallet</button>
+    <button id="mint" class="hidden">Mint</button>
+    <div class="help-text hidden">
         Having trouble connecting your wallet? Mint from contract <a
             href="https://goerli.etherscan.io/address/0x57B31CdAc737BF4c7b0431a9aBfEeBbBbBbBbBbB#writeContract"
             target="_blank">here</a>.
-        <div id="smoke"></div>
-        <img id="disco-ball" src="disco.gif" alt="Disco Ball">
     </div>
-
+    <img id="disco-ball" src="disco.gif" alt="Disco Ball">
 
     <audio id="lets-get-it-on" preload="none">
         <source src="./lets_get_it_on.mp3" type="audio/mp3">
@@ -131,19 +160,52 @@
     <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="script.js"></script>
-
     <script>
-        document.body.addEventListener('click', dimLights);
-        function dimLights() {
-            document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            document.getElementById('disco-ball').style.display = 'block';
-            document.getElementById('disco-ball').style.top = '10%';
-            updateParticleColor('#FF10F0'); // Update particle color to purple
-            document.body.removeEventListener('click', dimLights);
-            document.querySelector('.help-text').style.color = 'white';
+        function initializeParticlesAndEffects() {
+            const elementsToShow = document.querySelectorAll('.hidden');
+            elementsToShow.forEach(element => {
+                document.querySelector('.help-text').classList.remove('hidden');
+                element.classList.remove('hidden');
+            });
 
+            setTimeout(() => {
+                document.getElementById('connectWallet').classList.add('visible');
+                document.getElementById('mint').classList.add('visible');
+                const helpTextElement = document.querySelector('.help-text');
+                helpTextElement.classList.add('visible');
+                helpTextElement.classList.remove('hidden');
+                helpTextElement.style.opacity = '1'; // Add this line to set the opacity to 1
+            }, 3000);
+            document.body.addEventListener('click', dimLights);
 
+            function dimLights() {
+                document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                const discoBall = document.getElementById('disco-ball');
+                discoBall.style.display = 'block';
+                discoBall.style.top = '20%';
+                discoBall.style.transform = 'translateX(-50%) translateY(-50%)';
+                setTimeout(() => {
+                    discoBall.classList.add('visible');
+                }, 3000);
+                updateParticleColor('#FF10F0'); // Update particle color to purple
+                document.body.removeEventListener('click', dimLights);
+                document.querySelector('.help-text').style.color = 'white';
+            }
+
+            document.addEventListener('click', function () {
+                var audio = document.querySelector('audio');
+                audio.volume = 0.5;
+                audio.play();
+            });
         }
+
+        document.getElementById('enterSite').addEventListener('click', function () {
+            this.style.display = 'none'; // Remove the "Enter Site" button
+            var audio = document.querySelector('audio');
+            audio.volume = 0.5;
+            audio.play();
+            initializeParticlesAndEffects();
+        });
     </script>
 </body>
 
