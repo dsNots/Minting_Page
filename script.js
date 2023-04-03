@@ -68,26 +68,27 @@ const web3modal = new Web3Modal({
     cacheProvider: false, // optional
     providerOptions, // required
 });
-
 async function connectWallet() {
-    //  Initialize Web3Modal
-
-
+    // Initialize Web3Modal
     const web3Modal = new Web3Modal({
-        network: "mainnet", // optional
-        cacheProvider: false, // optional
-        providerOptions // required
-
-
+        network: "mainnet",
+        cacheProvider: false,
+        providerOptions
     });
 
-    //  Get a Web3 instance for the wallet
+    // Get a Web3 instance for the wallet
     const provider = await web3Modal.connect();
     const web3 = new Web3(provider);
 
-
     // Use the provider to get the user's accounts
     const accounts = await web3.eth.getAccounts();
+
+    // Update the button and text if a wallet is connected
+    if (accounts.length > 0) {
+        const button = document.getElementById('connectWallet');
+        button.style.backgroundColor = 'green';
+        button.textContent = 'Wallet connected';
+    }
 
     console.log(accounts);
 }
