@@ -173,11 +173,16 @@ function initializeParticlesAndEffects() {
     setTimeout(() => {
         document.getElementById('connectWallet').classList.add('visible');
         document.getElementById('mint').classList.add('visible');
+        document.getElementById('opensea-link').classList.add('visible');
+        document.getElementById('opensea-logo').classList.add('visible');
         const helpTextElement = document.querySelector('.help-text');
         helpTextElement.classList.add('visible');
         helpTextElement.classList.remove('hidden');
         helpTextElement.style.opacity = '1'; // Add this line to set the opacity to 1
+        const openseaLogo = document.getElementById('opensea-logo');
+        openseaLogo.style.opacity = '1';
     }, 3000);
+
     document.body.addEventListener('click', dimLights);
 
     function dimLights() {

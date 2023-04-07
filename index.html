@@ -59,6 +59,22 @@
             transition: top 10s, transform 10s;
         }
 
+        #opensea-link {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 101;
+
+        }
+
+        #opensea-logo {
+            width: 50px;
+            height: auto;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+        }
+
         #particles-js>canvas {
             transition: background-color 2s ease;
         }
@@ -176,6 +192,9 @@
             target="_blank">here</a>.
     </div>
     <img id="disco-ball" src="disco.gif" alt="Disco Ball">
+    <a id="opensea-link" class="hidden" href="https://opensea.io/collection/YOUR_COLLECTION_NAME" target="_blank">
+        <img id="opensea-logo" src="opensea.png" alt="OpenSea Logo">
+    </a>
 
     <audio id="lets-get-it-on" preload="none">
         <source src="./lets_get_it_on.mp3" type="audio/mp3">

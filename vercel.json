@@ -10,6 +10,10 @@
             "use": "@vercel/static"
         },
         {
+            "src": "opensea.png",
+            "use": "@vercel/static"
+        },
+        {
             "src": "lets_get_it_on.mp3",
             "use": "@vercel/static"
         },
